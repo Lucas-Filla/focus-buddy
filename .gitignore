@@ -1,0 +1,11 @@
+# Build output (generated, never commit)
+build/
+out/
+
+# Visual Studio / VS Code settings
+.vs/
+.vscode/
+*.user
+
+# Personal config with secrets (later)
+config.json
