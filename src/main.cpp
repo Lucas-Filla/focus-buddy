@@ -1,9 +1,12 @@
 #include "raylib.h"
+#include "platform/overlay.h"
+
+const Color KEY_COLOR = { 255, 0, 255, 255 };   // magenta = invisible
 
 int main(){
-    SetConfigFlags(FLAG_WINDOW_TRANSPARENT | FLAG_WINDOW_UNDECORATED | FLAG_WINDOW_TOPMOST);
-
+    SetConfigFlags(FLAG_WINDOW_UNDECORATED | FLAG_WINDOW_TOPMOST); 
     InitWindow(192, 192, "Focus Buddy");
+    makeColorKeyTransparent(GetWindowHandle(), KEY_COLOR.r, KEY_COLOR.g, KEY_COLOR.b);
     SetTargetFPS(30);
 
     Vector2 grabOffset{};
@@ -25,7 +28,7 @@ int main(){
         }
 
         BeginDrawing();
-        ClearBackground(BLANK);
+        ClearBackground(KEY_COLOR);
         DrawRectangle(64, 96, 64, 64, ORANGE); //PLACEHOLDER PET
         EndDrawing();
     }
