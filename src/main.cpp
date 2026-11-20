@@ -1,5 +1,8 @@
 #include "raylib.h"
 #include "platform/overlay.h"
+#include "platform/focus_monitor.h"
+
+#include <cstdio>
 
 constexpr int kWidth = 256;
 constexpr int kHeight = 256;
@@ -28,6 +31,7 @@ int main() {
     SetConfigFlags(FLAG_WINDOW_HIDDEN);
     InitWindow(kWidth, kHeight, "Focus Buddy renderer");
     SetTargetFPS(30);
+    SetTraceLogLevel(LOG_WARNING);
 
     RenderTexture2D canvas = LoadRenderTexture(kWidth, kHeight);
 
@@ -41,6 +45,8 @@ int main() {
 
     int   frame = 0;
     float frameTimer = 0.0f;
+
+    float focusPollTimer = 0.0f;
 
     RareFrame tailFlick{ 1, 3, 5, 0.0f, 2.0f };
     RareFrame blink{ 2, 3, 6, 0.0f, 4.0f };
@@ -64,6 +70,13 @@ int main() {
 
             if (frame == tailFlick.index && shouldSkip(tailFlick)) frame = (frame + 1) % kFrameCount;
             if (frame == blink.index && shouldSkip(blink))     frame = (frame + 1) % kFrameCount;
+        }
+
+        focusPollTimer += dt;
+        if (focusPollTimer >= 1.0f) {
+            focusPollTimer -= 1.0f;
+            std::printf("FOCUS: \"%s\" | idle %.0f s\n",
+                focus::activeWindowTitle().c_str(), focus::idleSeconds());
         }
 
         BeginTextureMode(canvas);

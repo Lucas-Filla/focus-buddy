@@ -18,7 +18,9 @@ add_executable(focus_buddy src/main.cpp)
 target_link_libraries(focus_buddy PRIVATE raylib)
 
 if(WIN32)
-  target_sources(focus_buddy PRIVATE src/platform/win32/overlay_win32.cpp)
+  target_sources(focus_buddy PRIVATE 
+    src/platform/win32/overlay_win32.cpp
+    src/platform/win32/focus_monitor_win32.cpp)
 endif()
 
 add_custom_command(TARGET focus_buddy POST_BUILD
