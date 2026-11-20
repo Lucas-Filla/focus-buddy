@@ -20,3 +20,8 @@ target_link_libraries(focus_buddy PRIVATE raylib)
 if(WIN32)
   target_sources(focus_buddy PRIVATE src/platform/win32/overlay_win32.cpp)
 endif()
+
+add_custom_command(TARGET focus_buddy POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${CMAKE_SOURCE_DIR}/assets
+          $<TARGET_FILE_DIR:focus_buddy>/assets)
