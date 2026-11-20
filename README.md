@@ -1,5 +1,5 @@
 # Focus Buddy
-![Build](https://github.com/Lucas-Filla/focus-buddy/actions/workflows/build.yml/badge.svg)
+[![Build](https://github.com/Lucas-Filla/focus-buddy/actions/workflows/build.yaml/badge.svg)](https://github.com/Lucas-Filla/focus-buddy/actions/workflows/build.yaml)
 
 A pixel-art desktop pet that sits on top of your screen and helps you stay focused.
 
