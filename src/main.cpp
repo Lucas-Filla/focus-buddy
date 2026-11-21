@@ -1,16 +1,21 @@
 #include "raylib.h"
 #include "platform/overlay.h"
 #include "platform/focus_monitor.h"
+#include "app/focus_rules.h"
 
 #include <cstdio>
+#include <string>
 
+//Windows vars
 constexpr int kWidth = 256;
 constexpr int kHeight = 256;
-
+//Animations vars
 constexpr int   kFrameSize = 32;
 constexpr int   kFrameCount = 4;
 constexpr int   kScale = 6;
 constexpr float kFrameSeconds[kFrameCount] = { 0.5f, 0.5f, 0.3f, 0.5f };
+//Focus vars
+constexpr float kFocusPollSeconds = 1.0f;
 
 struct RareFrame {
     int   index;
@@ -48,6 +53,15 @@ int main() {
 
     float focusPollTimer = 0.0f;
 
+    FocusRules rules(FocusRulesConfig{
+    .allowKeywords = { "Visual Studio", "Canvas", "Google Docs", "Pixelorama" },
+    .blockKeywords = { "YouTube", "Reddit", "Netflix", "Instagram", "TikTok" },
+    .ignoreKeywords = { "Focus Buddy", "focus_buddy.exe" },
+    .graceSeconds = 10.0,
+    .idleLimitSeconds = 300.0,
+        });
+    FocusState lastState = rules.state();
+
     RareFrame tailFlick{ 1, 3, 5, 0.0f, 2.0f };
     RareFrame blink{ 2, 3, 6, 0.0f, 4.0f };
 
@@ -73,10 +87,15 @@ int main() {
         }
 
         focusPollTimer += dt;
-        if (focusPollTimer >= 1.0f) {
-            focusPollTimer -= 1.0f;
-            std::printf("FOCUS: \"%s\" | idle %.0f s\n",
-                focus::activeWindowTitle().c_str(), focus::idleSeconds());
+        if (focusPollTimer >= kFocusPollSeconds) {
+            focusPollTimer -= kFocusPollSeconds;
+            const std::string title = focus::activeWindowTitle();
+            std::printf("TITLE: \"%s\"\n", title.c_str());
+            const FocusState state = rules.update(title, focus::idleSeconds(), kFocusPollSeconds);
+            if (state != lastState) {
+                std::printf("STATE: %s -> %s  (\"%s\")\n", toString(lastState), toString(state), title.c_str());
+                lastState = state;
+            }
         }
 
         BeginTextureMode(canvas);

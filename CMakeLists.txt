@@ -14,7 +14,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
-add_executable(focus_buddy src/main.cpp)
+add_executable(focus_buddy src/main.cpp src/app/focus_rules.cpp)
 target_link_libraries(focus_buddy PRIVATE raylib)
 
 if(WIN32)
@@ -23,7 +23,8 @@ if(WIN32)
     src/platform/win32/focus_monitor_win32.cpp)
 endif()
 
-add_custom_command(TARGET focus_buddy POST_BUILD
+add_custom_target(copy_assets ALL
   COMMAND ${CMAKE_COMMAND} -E copy_directory
           ${CMAKE_SOURCE_DIR}/assets
           $<TARGET_FILE_DIR:focus_buddy>/assets)
+add_dependencies(focus_buddy copy_assets)

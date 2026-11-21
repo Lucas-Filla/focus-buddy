@@ -7,6 +7,12 @@ namespace focus {
         HWND window = GetForegroundWindow();
         if (!window) return {};
 
+        if (window == GetConsoleWindow()) return {};
+
+        DWORD processId = 0;
+        GetWindowThreadProcessId(window, &processId);
+        if (processId == GetCurrentProcessId()) return {};
+
         int length = GetWindowTextLengthW(window);
         if (length == 0) return {};
 
