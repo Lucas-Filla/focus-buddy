@@ -29,6 +29,7 @@ constexpr int kScoldLineCount = sizeof(kScoldLines) / sizeof(kScoldLines[0]);
 
 constexpr const char* kPraiseLines[] = {
     "Good boy.",
+    "Phew..",
 };
 constexpr int kPraiseLineCount = sizeof(kPraiseLines) / sizeof(kPraiseLines[0]);
 
@@ -155,7 +156,7 @@ int main() {
                     bubbleTimer = 0.0f;
                     praiseTimer = 0.0f;
                 }
-                if (previous == FocusState::Distracted && state == FocusState::OnTask) {
+                if (previous == FocusState::Distracted && state != FocusState::Idle) {
                     praiseLine = GetRandomValue(0, kPraiseLineCount - 1);
                     praiseTimer = kPraiseSeconds;
                 }
