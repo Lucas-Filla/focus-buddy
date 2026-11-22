@@ -54,9 +54,10 @@ int main() {
     float focusPollTimer = 0.0f;
 
     FocusRules rules(FocusRulesConfig{
-    .allowKeywords = { "Visual Studio", "Canvas", "Google Docs", "Pixelorama" },
+    .allowKeywords = { "Visual Studio", "Pixelorama", "Google Docs",
+                              "CS 4040", "CS 3200", "CS 3620", "AI 3100", "CHEM 1510" },
     .blockKeywords = { "YouTube", "Reddit", "Netflix", "Instagram", "TikTok" },
-    .ignoreKeywords = { "Focus Buddy", "focus_buddy.exe" },
+    .ignoreKeywords = { },
     .graceSeconds = 10.0,
     .idleLimitSeconds = 300.0,
         });
